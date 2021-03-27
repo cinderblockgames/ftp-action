@@ -34,10 +34,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Get files
-      uses: actions/checkout@v2.3.2
+      uses: actions/checkout@v2.3.4
       
     - name: FTP Deploy
-      uses: cinderblockgames/ftp-action@main
+      uses: cinderblockgames/ftp-action@v1.0.1
       with:
         # required
         server: ftp.example.com
