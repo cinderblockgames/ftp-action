@@ -21,7 +21,7 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
             // Get source files info.
             Console.WriteLine("...Finding source files...");
             var source = Directory.GetFiles(options.SourcePath, "*", SearchOption.AllDirectories)
-                                  .Select(src => new Item(src, options.SourcePath, File.GetLastWriteTime(src).ToUniversalTime()));
+                                  .Select(src => new Item(src, options.SourcePath, File.GetLastWriteTime(src)));
 
             using (var client = new FtpClient(options.Server, options.Port, options.Username, options.Password))
             {
