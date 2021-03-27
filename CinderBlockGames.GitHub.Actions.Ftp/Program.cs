@@ -34,10 +34,13 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
 
                 // Delete any files that don't exist in source.
                 var delete = destination.Except(source, ItemComparer.Default);
+                Console.WriteLine($"Deleting {delete.Count()} files:");
                 foreach (var file in delete)
                 {
+                    Console.Write(file.FullPath);
                     client.DeleteFile(file.FullPath);
                 }
+                Console.WriteLine();
 
                 // Update any files that have changed.
                 var update = (from src in source
@@ -45,11 +48,17 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
                               where ItemComparer.Default.Equals(src, dest)
                                  && src.Modified > dest.Modified
                               select src);
+                Console.WriteLine($"Updating {update.Count()} files:");
                 Upload(client, update);
+                Console.WriteLine();
 
                 // Upload any files that are new.
                 var upload = source.Except(destination, ItemComparer.Default);
+                Console.WriteLine($"Uploading {upload.Count()} new files:");
                 Upload(client, upload);
+                Console.WriteLine();
+
+                Console.WriteLine("Complete!");
             }
         }
 
@@ -58,6 +67,8 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
             var grouped = files.GroupBy(file => file.Directory, StringComparer.OrdinalIgnoreCase);
             foreach (var kvp in grouped)
             {
+                Console.WriteLine($"Directory: {kvp.Key}");
+                Console.WriteLine(string.Join(Environment.NewLine, kvp.Select(file => file.FullPath)));
                 client.UploadFiles(kvp.Select(file => file.FullPath), kvp.Key);
             }
         }

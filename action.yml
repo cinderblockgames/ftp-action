@@ -1,0 +1,39 @@
+name: 'FTP Smart File Copy'
+description: '.NET-based GitHub Action to copy files over FTP.'
+branding:
+  icon: arrow-up-circle
+  color: white
+inputs:
+  owner:
+    description:
+      'cinder block games'
+    required: true
+  name:
+    description:
+      'ftp-action'
+    required: true
+  branch:
+    description:
+      'main'
+    required: true
+  dir:
+    description:
+      '/'
+    required: false
+    default: '/github/workspace'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+  - '--server'
+  - ${{ inputs.server }}
+  - '--port'
+  - ${{ inputs.port }}
+  - '--username'
+  - ${{ inputs.username }}
+  - '--password'
+  - ${{ inputs.password }}
+  - '--source'
+  - ${{ inputs.source }}
+  - '--destination'
+  - ${{ inputs.destination }}
