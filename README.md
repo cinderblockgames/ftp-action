@@ -43,6 +43,6 @@ jobs:
         password: ${{ secrets.FTP_PASSWORD }}
         # optional
         port: 22
-        source: /src/
-        destination: /target/
+        source: src/
+        destination: target/
 ```
