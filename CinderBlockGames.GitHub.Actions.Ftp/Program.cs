@@ -13,8 +13,7 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
         public static void Main(string[] args)
         {
             Parser.Default.ParseArguments<Options>(args)
-                .WithParsed(Run)
-                .WithNotParsed(Err);
+                .WithParsed(Run);
         }
 
         private static void Run(Options options)
@@ -71,11 +70,6 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
                 Console.WriteLine(string.Join(Environment.NewLine, kvp.Select(file => file.FullPath)));
                 client.UploadFiles(kvp.Select(file => file.FullPath), kvp.Key);
             }
-        }
-
-        private static void Err(IEnumerable<Error> errors)
-        {
-            //handle errors
         }
 
     }
