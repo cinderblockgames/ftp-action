@@ -39,7 +39,7 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
                 Console.WriteLine($"...Deleting {delete.Count()} files...");
                 foreach (var file in delete)
                 {
-                    Console.Write(file.FullPath);
+                    Console.WriteLine(file.FullPath);
                     client.DeleteFile(file.FullPath);
                 }
                 Console.WriteLine();
@@ -70,7 +70,7 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
             foreach (var kvp in grouped)
             {
                 Console.WriteLine($"[Directory: {kvp.Key}]");
-                Console.WriteLine(string.Join(Environment.NewLine, kvp.Select(file => file.FullPath)));
+                Console.WriteLine(string.Join("\r\n", kvp.Select(file => file.FullPath)));
                 client.UploadFiles(kvp.Select(file => file.FullPath), kvp.Key);
             }
         }
