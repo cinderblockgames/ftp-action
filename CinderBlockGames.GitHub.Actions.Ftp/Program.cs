@@ -19,14 +19,17 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
         private static void Run(Options options)
         {
             // Get source files info.
+            Console.WriteLine("Finding source files...");
             var source = Directory.GetFiles(options.SourcePath, "*", SearchOption.AllDirectories)
                                   .Select(src => new Item(src, options.SourcePath, File.GetLastWriteTime(src).ToUniversalTime()));
 
             using (var client = new FtpClient(options.Server, options.Port, options.Username, options.Password))
             {
+                Console.WriteLine("Connecting to remote server...");
                 client.Connect();
 
                 // Get destination files info.
+                Console.WriteLine("Finding destination files...");
                 var destination = client.GetListing(options.DestinationPath, FtpListOption.Recursive)
                                         .Where(dest => dest.Type == FtpFileSystemObjectType.File)
                                         .Select(dest => new Item(dest.FullName, options.DestinationPath, dest.Modified));

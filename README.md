@@ -23,6 +23,8 @@ on:
   # Run automatically on push to main branch
   push:
     branches: [ main ]
+    paths:
+    - 'src/**'
   # Allow manual trigger
   workflow_dispatch:
 
@@ -43,6 +45,6 @@ jobs:
         password: ${{ secrets.FTP_PASSWORD }}
         # optional
         port: 22
-        source: src/
-        destination: target/
+        source: /src/
+        destination: /target/
 ```
