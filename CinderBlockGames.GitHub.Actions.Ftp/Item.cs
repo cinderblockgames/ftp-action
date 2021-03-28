@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CinderBlockGames.GitHub.Actions.Ftp
+﻿namespace CinderBlockGames.GitHub.Actions.Ftp
 {
     internal class Item
     {
@@ -9,13 +7,11 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
         public string LocalPath { get; set; }
         public string Directory { get; set; }
         public string Name { get; set; }
-        public DateTime Modified { get; set; }
 
-        public Item(string filename, string originalPath, DateTime modified)
+        public Item(string filename, string originalPath)
         {
             FullPath = Standardize(filename);
             LocalPath = FullPath.Substring(originalPath.Length).TrimStart('/');
-            Modified = modified;
 
             var split = LocalPath.LastIndexOf('/');
             if (split > 0)

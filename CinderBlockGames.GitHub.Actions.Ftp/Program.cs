@@ -21,7 +21,7 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
             // Get source files info.
             Console.WriteLine("...Finding source files...");
             var source = Directory.GetFiles(options.SourcePath, "*", SearchOption.AllDirectories)
-                                  .Select(src => new Item(src, options.SourcePath, File.GetLastWriteTime(src).ToUniversalTime()));
+                                  .Select(src => new Item(src, options.SourcePath));
 
             using (var client = new FtpClient(options.Server, options.Port, options.Username, options.Password))
             {
@@ -32,7 +32,7 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
                 Console.WriteLine("...Finding destination files...");
                 var destination = client.GetListing(options.DestinationPath, FtpListOption.Recursive)
                                         .Where(dest => dest.Type == FtpFileSystemObjectType.File)
-                                        .Select(dest => new Item(dest.FullName, options.DestinationPath, dest.Modified));
+                                        .Select(dest => new Item(dest.FullName, options.DestinationPath));
 
                 // Delete any files that don't exist in source.
                 var delete = destination.Except(source, ItemComparer.Default);
@@ -48,12 +48,13 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
                 var update = (from src in source
                               from dest in destination
                               where ItemComparer.Default.Equals(src, dest)
-                                 && src.Modified > dest.Modified
+                              let hash = client.GetChecksum(dest.FullPath)
+                              where !hash.Verify(src.FullPath)
                               select src);
                 Console.WriteLine($"...Updating {update.Count()} files...");
                 Upload(client, update);
                 Console.WriteLine();
-
+                
                 // Upload any files that are new.
                 var upload = source.Except(destination, ItemComparer.Default);
                 Console.WriteLine($"...Uploading {upload.Count()} new files...");
