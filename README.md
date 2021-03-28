@@ -19,7 +19,7 @@ This .NET-based GitHub Action updates the destination to match the source over F
 | destination     | No        | **/**                    | Directory in destination to which to upload.                                              |
 | skipUnchanged   | No        | **false**                | Only upload files that have changed.                                                      |
 | skipDirectories | No        | **.github\|.well-known** | Folders to be ignored in both source and destination, separated by a pipe (\|) character. |
-| test            | No (flag) |                          | Do not perform file deletions or uploads; just output intended actions.                   |
+| test            | No        | **false**                | Do not perform file deletions or uploads; just output intended actions.                   |
 
 ## Example Workflow
 ```
@@ -56,5 +56,5 @@ jobs:
         destination: target/path
         skipUnchanged: true
         skipDirectories: .github|.well-known|configs|private-keys
-        test:
+        test: true
 ```

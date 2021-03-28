@@ -52,9 +52,9 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
         public string SkipDirectories { get; set; }
 
         [Option("test",
-                Required = false,
+                Required = false, Default = false,
                 HelpText = "Do not perform file deletions or uploads; just output intended actions.")]
-        public bool TestOnly { get; set; }
+        public bool? TestOnly { get; set; }
 
     }
 }

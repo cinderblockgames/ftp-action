@@ -45,6 +45,7 @@ inputs:
     description:
       'Do not perform file deletions or uploads; just output intended actions.'
     required: false
+    default: 'false'
 runs:
   using: 'docker'
   image: 'Dockerfile'

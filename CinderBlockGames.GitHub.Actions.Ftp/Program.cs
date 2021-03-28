@@ -49,7 +49,7 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
                 foreach (var file in delete)
                 {
                     Console.WriteLine(file.FullPath);
-                    if (!options.TestOnly)
+                    if (!options.TestOnly.Value)
                     {
                         client.DeleteFile(file.FullPath);
                     }
@@ -58,7 +58,7 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
 
                 #endregion
 
-                if (options.SkipUnchanged == true)
+                if (options.SkipUnchanged.Value)
                 {
                     #region " Update "
 
@@ -90,7 +90,7 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
                         }
                     }
                     Console.WriteLine($"...Updating {update.Count()} files...");
-                    Upload(client, update, options.TestOnly);
+                    Upload(client, update, options.TestOnly.Value);
                     Console.WriteLine();
 
                     #endregion
@@ -100,7 +100,7 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
                     // Upload any files that are new.
                     var upload = source.Except(destination, ItemComparer.Default);
                     Console.WriteLine($"...Uploading {upload.Count()} new files...");
-                    Upload(client, upload, options.TestOnly);
+                    Upload(client, upload, options.TestOnly.Value);
                     Console.WriteLine();
 
                     #endregion
@@ -110,7 +110,7 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
                     #region " Upsert "
 
                     Console.WriteLine($"...Uploading {source.Count()} files...");
-                    Upload(client, source, options.TestOnly);
+                    Upload(client, source, options.TestOnly.Value);
                     Console.WriteLine();
 
                     #endregion
