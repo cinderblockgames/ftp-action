@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using CommandLine;
 using FluentFTP;
 
@@ -45,12 +46,45 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
                 Console.WriteLine();
 
                 // Update any files that have changed.
-                var update = (from src in source
+                IEnumerable<Item> update = null;
+                if (client.HashAlgorithms == FtpHashAlgorithm.NONE)
+                {
+                    var list = new List<Item>();
+                    var existing = (from src in source
+                                    from dest in destination
+                                    where ItemComparer.Default.Equals(src, dest)
+                                    select new { src, dest });
+                    using (var algo = MD5.Create())
+                    {
+                        foreach (var pair in existing)
+                        {
+                            using (var dest = new MemoryStream())
+                            {
+                                if (client.Download(dest, pair.dest.FullPath))
+                                {
+                                    var hash = algo.ComputeHash(dest);
+                                    using (var src = File.OpenRead(pair.src.FullPath))
+                                    {
+                                        if (hash.SequenceEqual(algo.ComputeHash(src)))
+                                        {
+                                            list.Add(pair.src);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    update = list;
+                }
+                else
+                {
+                    update = (from src in source
                               from dest in destination
                               where ItemComparer.Default.Equals(src, dest)
                               let hash = client.GetChecksum(dest.FullPath)
                               where hash.IsValid && !hash.Verify(src.FullPath)
                               select src);
+                }
                 Console.WriteLine($"...Updating {update.Count()} files...");
                 Upload(client, update);
                 Console.WriteLine();
