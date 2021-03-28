@@ -39,5 +39,12 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
                 HelpText = "Directory in destination to which to upload.")]
         public string DestinationPath { get; set; }
 
+        // Options.
+
+        [Option("ignoreUnchanged",
+                Required = false, Default = false,
+                HelpText = "Do not upload any file that hasn't changed.  Setting to true will be slower than leaving false.")]
+        public bool IgnoreUnchanged { get; set; }
+
     }
 }
