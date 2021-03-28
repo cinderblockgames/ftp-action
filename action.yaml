@@ -33,7 +33,17 @@ inputs:
     default: '/'
   skipUnchanged:
     description:
-      'Do not upload any file that hasn''t changed.  Setting to true will be slower than leaving false.'
+      'Only upload files that have changed.'
+    required: false
+    default: 'false'
+  skipDirectories:
+    description:
+      'Folders to be ignored in both source and destination, separated by a pipe (|) character.'
+    required: false
+    default: '.github|.well-known'
+  test:
+    description:
+      'Do not perform file deletions or uploads; just output intended actions.'
     required: false
     default: 'false'
 runs:
@@ -54,3 +64,7 @@ runs:
   - ${{ inputs.destination }}
   - '--skipUnchanged'
   - ${{ inputs.skipUnchanged }}
+  - '--skipDirectories'
+  - ${{ inputs.skipDirectories }}
+  - '--test'
+  - ${{ inputs.test }}
