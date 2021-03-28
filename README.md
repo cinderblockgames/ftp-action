@@ -3,7 +3,7 @@ This .NET-based GitHub Action updates the destination to match the source over F
 - Delete files from destination that do not exist in source.
 - ignoreUnchanged?
   - true
-    - Update files that have been modified in source since they were last modified in destination.
+    - Update files that do not match between source and destination.
     - Upload files from source that do not exist in destination.
   - false
     - Upload all files from source to destination.
@@ -42,7 +42,7 @@ jobs:
       uses: actions/checkout@v2.3.4
       
     - name: FTP Deploy
-      uses: cinderblockgames/ftp-action@v1.0.1
+      uses: cinderblockgames/ftp-action@v1.1.0
       with:
         # required
         server: ftp.example.com
