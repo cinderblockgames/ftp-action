@@ -1,18 +1,23 @@
 # FTP Smart File Copy
 This .NET-based GitHub Action updates the destination to match the source over FTP, by executing the following steps:
 - Delete files from destination that do not exist in source.
-- Update files that have been modified in source since they were last modified in destination.
-- Upload files from source that do not exist in destination.
+- skipUnchanged?
+  - true
+    - Update files that do not match between source and destination.
+    - Upload files from source that do not exist in destination.
+  - false
+    - Upload all files from source to destination.
 
 ## Inputs
-| Parameter   | Required  | Default | Description                                  |
-| ----------- | --------- | ------- | -------------------------------------------- |
-| server      | **Yes**   |         | Address for the destination server.          |
-| port        | No        | **21**  | Port for the destination server.             |
-| username    | **Yes**   |         | Username for the destination server.         |
-| password    | **Yes**   |         | Password for the destination server.         |
-| source      | No        | **/**   | Directory in source from which to upload.    |
-| destination | No        | **/**   | Directory in destination to which to upload. |
+| Parameter     | Required  | Default   | Description                                                                                     |
+| ------------- | --------- | --------- | -------------------------------------------- |
+| **server**    | **Yes**   |           | Address for the destination server.          |
+| port          | No        | **21**    | Port for the destination server.             |
+| **username**  | **Yes**   |           | Username for the destination server.         |
+| **password**  | **Yes**   |           | Password for the destination server.         |
+| source        | No        | **/**     | Directory in source from which to upload.    |
+| destination   | No        | **/**     | Directory in destination to which to upload. |
+| skipUnchanged | No        | **false** | Only upload files that have changed.         |
 
 ## Example Workflow
 ```
@@ -37,7 +42,7 @@ jobs:
       uses: actions/checkout@v2.3.4
       
     - name: FTP Deploy
-      uses: cinderblockgames/ftp-action@v1.0.1
+      uses: cinderblockgames/ftp-action@v1.1.0
       with:
         # required
         server: ftp.example.com
@@ -47,4 +52,5 @@ jobs:
         port: 22
         source: src/path
         destination: target/path
+        skipUnchanged: true
 ```

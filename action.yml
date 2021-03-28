@@ -12,7 +12,7 @@ inputs:
     description:
       'Port for the destination server.'
     required: false
-    default: 21
+    default: '21'
   username:
     description:
       'Username for the destination server.'
@@ -31,6 +31,11 @@ inputs:
       'Directory in destination to which to upload.'
     required: true
     default: '/'
+  skipUnchanged:
+    description:
+      'Do not upload any file that hasn''t changed.  Setting to true will be slower than leaving false.'
+    required: false
+    default: 'false'
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -47,3 +52,5 @@ runs:
   - ${{ inputs.source }}
   - '--destination'
   - ${{ inputs.destination }}
+  - '--skipUnchanged'
+  - ${{ inputs.skipUnchanged }}
