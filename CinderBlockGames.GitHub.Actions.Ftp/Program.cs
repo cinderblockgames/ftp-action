@@ -46,6 +46,7 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
                 Console.WriteLine();
 
                 // Update any files that have changed.
+                Console.WriteLine("...Checking files for updates...");
                 IEnumerable<Item> update = null;
                 if (client.HashAlgorithms == FtpHashAlgorithm.NONE)
                 {
@@ -65,7 +66,7 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
                                     var hash = algo.ComputeHash(dest);
                                     using (var src = File.OpenRead(pair.src.FullPath))
                                     {
-                                        if (hash.SequenceEqual(algo.ComputeHash(src)))
+                                        if (!hash.SequenceEqual(algo.ComputeHash(src)))
                                         {
                                             list.Add(pair.src);
                                         }
