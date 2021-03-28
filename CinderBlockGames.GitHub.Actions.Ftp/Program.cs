@@ -49,7 +49,7 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
                               from dest in destination
                               where ItemComparer.Default.Equals(src, dest)
                               let hash = client.GetChecksum(dest.FullPath)
-                              where !hash.Verify(src.FullPath)
+                              where hash.IsValid && !hash.Verify(src.FullPath)
                               select src);
                 Console.WriteLine($"...Updating {update.Count()} files...");
                 Upload(client, update);
