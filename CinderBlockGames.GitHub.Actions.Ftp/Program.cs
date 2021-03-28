@@ -20,6 +20,8 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
 
         private static void Run(Options options)
         {
+            Console.Write("skipDirectories input value:");
+            Console.Write("\"" + options.SkipDirectories + "\"");
             // Get source files info.
             Console.WriteLine("...Finding source files...");
             var source = Directory.GetFiles(options.SourcePath, "*", SearchOption.AllDirectories)

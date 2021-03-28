@@ -36,6 +36,12 @@ inputs:
       'Only upload files that have changed.'
     required: false
     default: 'false'
+  skipDirectories:
+    description:
+      ''
+    required: false
+    default: '.github
+.well-known'
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -54,3 +60,5 @@ runs:
   - ${{ inputs.destination }}
   - '--skipUnchanged'
   - ${{ inputs.skipUnchanged }}
+  - '--skipDirectories'
+  - ${{ inputs.skipDirectories }}

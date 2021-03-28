@@ -46,5 +46,10 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
                 HelpText = "Only upload files that have changed.")]
         public bool? SkipUnchanged { get; set; }
 
+        [Option("skipDirectories",
+                Required = false, Default = ".github\r\n.well-known",
+                HelpText = "")]
+        public string SkipDirectories { get; set; }
+
     }
 }
