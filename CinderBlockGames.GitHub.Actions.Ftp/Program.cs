@@ -50,7 +50,7 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
 
                 #endregion
 
-                if (options.IgnoreUnchanged)
+                if (options.SkipUnchanged == true)
                 {
                     #region " Update "
 

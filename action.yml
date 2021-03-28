@@ -31,7 +31,7 @@ inputs:
       'Directory in destination to which to upload.'
     required: true
     default: '/'
-  ignoreUnchanged:
+  skipUnchanged:
     description:
       'Do not upload any file that hasn''t changed.  Setting to true will be slower than leaving false.'
     required: false
@@ -52,5 +52,5 @@ runs:
   - ${{ inputs.source }}
   - '--destination'
   - ${{ inputs.destination }}
-  - '--ignoreUnchanged'
-  - ${{ inputs.ignoreUnchanged }}
+  - '--skipUnchanged'
+  - ${{ inputs.skipUnchanged }}
