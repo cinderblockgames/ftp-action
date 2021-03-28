@@ -33,7 +33,7 @@ inputs:
     default: '/'
   skipUnchanged:
     description:
-      'Do not upload any file that hasn''t changed.  Setting to true will be slower than leaving false.'
+      'Only upload files that have changed.'
     required: false
     default: 'false'
 runs:

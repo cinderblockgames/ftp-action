@@ -43,7 +43,7 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
 
         [Option("skipUnchanged",
                 Required = false, Default = false,
-                HelpText = "Do not upload any file that hasn't changed.  Setting to true will be slower than leaving false.")]
+                HelpText = "Only upload files that have changed.")]
         public bool? SkipUnchanged { get; set; }
 
     }
