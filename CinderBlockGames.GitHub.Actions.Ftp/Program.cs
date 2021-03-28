@@ -49,7 +49,10 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
                 foreach (var file in delete)
                 {
                     Console.WriteLine(file.FullPath);
-                    client.DeleteFile(file.FullPath);
+                    if (!options.TestOnly)
+                    {
+                        client.DeleteFile(file.FullPath);
+                    }
                 }
                 Console.WriteLine();
 
@@ -87,7 +90,7 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
                         }
                     }
                     Console.WriteLine($"...Updating {update.Count()} files...");
-                    Upload(client, update);
+                    Upload(client, update, options.TestOnly);
                     Console.WriteLine();
 
                     #endregion
@@ -97,7 +100,7 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
                     // Upload any files that are new.
                     var upload = source.Except(destination, ItemComparer.Default);
                     Console.WriteLine($"...Uploading {upload.Count()} new files...");
-                    Upload(client, upload);
+                    Upload(client, upload, options.TestOnly);
                     Console.WriteLine();
 
                     #endregion
@@ -107,7 +110,7 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
                     #region " Upsert "
 
                     Console.WriteLine($"...Uploading {source.Count()} files...");
-                    Upload(client, source);
+                    Upload(client, source, options.TestOnly);
                     Console.WriteLine();
 
                     #endregion
@@ -140,14 +143,17 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
 
         #region " Upload "
 
-        private static void Upload(FtpClient client, IEnumerable<Item> files)
+        private static void Upload(FtpClient client, IEnumerable<Item> files, bool testOnly)
         {
             var grouped = files.GroupBy(file => file.Directory, StringComparer.OrdinalIgnoreCase);
             foreach (var kvp in grouped)
             {
                 Console.WriteLine($"[Directory: {kvp.Key}]");
                 Console.WriteLine(string.Join("\r\n", kvp.Select(file => file.FullPath)));
-                client.UploadFiles(kvp.Select(file => file.FullPath), kvp.Key);
+                if (!testOnly)
+                {
+                    client.UploadFiles(kvp.Select(file => file.FullPath), kvp.Key);
+                }
             }
         }
 

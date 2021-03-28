@@ -19,6 +19,7 @@ This .NET-based GitHub Action updates the destination to match the source over F
 | destination     | No        | **/**                    | Directory in destination to which to upload.                                              |
 | skipUnchanged   | No        | **false**                | Only upload files that have changed.                                                      |
 | skipDirectories | No        | **.github\|.well-known** | Folders to be ignored in both source and destination, separated by a pipe (\|) character. |
+| test            | No (flag) |                          | Do not perform file deletions or uploads; just output intended actions.                   |
 
 ## Example Workflow
 ```
@@ -43,7 +44,7 @@ jobs:
       uses: actions/checkout@v2.3.4
       
     - name: FTP Deploy
-      uses: cinderblockgames/ftp-action@v1.1.0
+      uses: cinderblockgames/ftp-action@v1.2.0
       with:
         # required
         server: ftp.example.com
@@ -55,4 +56,5 @@ jobs:
         destination: target/path
         skipUnchanged: true
         skipDirectories: .github|.well-known|configs|private-keys
+        test:
 ```

@@ -51,5 +51,10 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
                 HelpText = "Folders to be ignored in both source and destination, separated by a pipe (|) character.")]
         public string SkipDirectories { get; set; }
 
+        [Option("test",
+                Required = false,
+                HelpText = "Do not perform file deletions or uploads; just output intended actions.")]
+        public bool TestOnly { get; set; }
+
     }
 }
