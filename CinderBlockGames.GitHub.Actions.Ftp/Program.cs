@@ -63,7 +63,7 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
                             {
                                 if (client.Download(dest, pair.dest.FullPath))
                                 {
-                                    var hash = algo.ComputeHash(dest);
+                                    IEnumerable<byte> hash = algo.ComputeHash(dest);
                                     using (var src = File.OpenRead(pair.src.FullPath))
                                     {
                                         if (!hash.SequenceEqual(algo.ComputeHash(src)))
