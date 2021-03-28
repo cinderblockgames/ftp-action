@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
 using CommandLine;
 using FluentFTP;
 
@@ -57,20 +58,20 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
                                     select new { src, dest });
                     using (var algo = MD5.Create())
                     {
+                        var filename = Guid.NewGuid().ToString();
+                        var encoding = new UnicodeEncoding();
                         foreach (var pair in existing)
                         {
-                            using (var dest = new MemoryStream())
+                            if (client.DownloadFile(filename, pair.dest.FullPath) == FtpStatus.Success)
                             {
-                                if (client.Download(dest, pair.dest.FullPath))
+                                var dest = File.ReadAllText(filename)
+                                               .Replace("\r\n", "\n").Replace("\r", "\n"); // Standardize line endings.
+                                IEnumerable<byte> hash = algo.ComputeHash(encoding.GetBytes(dest));
+                                var src = File.ReadAllText(pair.src.FullPath)
+                                              .Replace("\r\n", "\n").Replace("\r", "\n"); // Standardize line endings.;
+                                if (!hash.SequenceEqual(algo.ComputeHash(encoding.GetBytes(src))))
                                 {
-                                    IEnumerable<byte> hash = algo.ComputeHash(dest);
-                                    using (var src = File.OpenRead(pair.src.FullPath))
-                                    {
-                                        if (!hash.SequenceEqual(algo.ComputeHash(src)))
-                                        {
-                                            list.Add(pair.src);
-                                        }
-                                    }
+                                    list.Add(pair.src);
                                 }
                             }
                         }
