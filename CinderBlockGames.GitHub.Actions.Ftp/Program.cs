@@ -16,16 +16,18 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
         {
             Parser.Default.ParseArguments<Options>(args)
                 .WithParsed(Run);
+#if DEBUG
+            Console.ReadLine(); // Pause for review.
+#endif
         }
 
         private static void Run(Options options)
         {
-            Console.Write("skipDirectories input value:");
-            Console.Write("\"" + options.SkipDirectories + "\"");
             // Get source files info.
             Console.WriteLine("...Finding source files...");
             var source = Directory.GetFiles(options.SourcePath, "*", SearchOption.AllDirectories)
                                   .Select(src => new Item(src, options.SourcePath));
+            source = Filter(source, options.SkipDirectories);
 
             using (var client = new FtpClient(options.Server, options.Port, options.Username, options.Password))
             {
@@ -37,6 +39,7 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
                 var destination = client.GetListing(options.DestinationPath, FtpListOption.Recursive)
                                         .Where(dest => dest.Type == FtpFileSystemObjectType.File)
                                         .Select(dest => new Item(dest.FullName, options.DestinationPath));
+                destination = Filter(destination, options.SkipDirectories);
 
                 #region " Delete "
 
@@ -114,6 +117,29 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
             }
         }
 
+        #region " Filter "
+
+        private static IEnumerable<Item> Filter(IEnumerable<Item> files, string directories)
+        {
+            var names = directories?.Split('|', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            if (names?.Any() == true)
+            {
+                return files.Where(file => !DirectoryFound(file.Directory, names));
+            }
+            return files;
+        }
+
+        private static bool DirectoryFound(string haystack, IEnumerable<string> needles)
+        {
+            var haystacks = haystack.Split('/', StringSplitOptions.RemoveEmptyEntries);
+            var remaining = haystacks.Except(needles, StringComparer.OrdinalIgnoreCase);
+            return remaining.Count() < haystacks.Count();
+        }
+
+        #endregion
+
+        #region " Upload "
+
         private static void Upload(FtpClient client, IEnumerable<Item> files)
         {
             var grouped = files.GroupBy(file => file.Directory, StringComparer.OrdinalIgnoreCase);
@@ -124,6 +150,8 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
                 client.UploadFiles(kvp.Select(file => file.FullPath), kvp.Key);
             }
         }
+
+        #endregion
 
     }
 }

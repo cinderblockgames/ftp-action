@@ -38,10 +38,9 @@ inputs:
     default: 'false'
   skipDirectories:
     description:
-      ''
+      'Folders to be ignored in both source and destination, separated by a pipe (|) character.'
     required: false
-    default: '.github
-.well-known'
+    default: '.github|.well-known'
 runs:
   using: 'docker'
   image: 'Dockerfile'

@@ -47,8 +47,8 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
         public bool? SkipUnchanged { get; set; }
 
         [Option("skipDirectories",
-                Required = false, Default = ".github\r\n.well-known",
-                HelpText = "")]
+                Required = false, Default = ".github|.well-known",
+                HelpText = "Folders to be ignored in both source and destination, separated by a pipe (|) character.")]
         public string SkipDirectories { get; set; }
 
     }
