@@ -10,14 +10,14 @@ This .NET-based GitHub Action updates the destination to match the source over F
 
 ## Inputs
 | Parameter     | Required  | Default   | Description                                                                                     |
-| ------------- | --------- | --------- | ----------------------------------------------------------------------------------------------- |
-| **server**    | **Yes**   |           | Address for the destination server.                                                             |
-| port          | No        | **21**    | Port for the destination server.                                                                |
-| **username**  | **Yes**   |           | Username for the destination server.                                                            |
-| **password**  | **Yes**   |           | Password for the destination server.                                                            |
-| source        | No        | **/**     | Directory in source from which to upload.                                                       |
-| destination   | No        | **/**     | Directory in destination to which to upload.                                                    |
-| skipUnchanged | No        | **false** | Do not upload any file that hasn't changed.  Setting to true will be slower than leaving false. |
+| ------------- | --------- | --------- | -------------------------------------------- |
+| **server**    | **Yes**   |           | Address for the destination server.          |
+| port          | No        | **21**    | Port for the destination server.             |
+| **username**  | **Yes**   |           | Username for the destination server.         |
+| **password**  | **Yes**   |           | Password for the destination server.         |
+| source        | No        | **/**     | Directory in source from which to upload.    |
+| destination   | No        | **/**     | Directory in destination to which to upload. |
+| skipUnchanged | No        | **false** | Do not upload any file that hasn't changed.  |
 
 ## Example Workflow
 ```
