@@ -17,7 +17,7 @@ This .NET-based GitHub Action updates the destination to match the source over F
 | **password**  | **Yes**   |           | Password for the destination server.         |
 | source        | No        | **/**     | Directory in source from which to upload.    |
 | destination   | No        | **/**     | Directory in destination to which to upload. |
-| skipUnchanged | No        | **false** | Do not upload any file that hasn't changed.  |
+| skipUnchanged | No        | **false** | Only upload files that have changed.         |
 
 ## Example Workflow
 ```
