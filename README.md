@@ -10,7 +10,7 @@ This .NET-based GitHub Action updates the destination to match the source over F
 
 ## Inputs
 | Parameter       | Required  | Default                  | Description                                                                               |
-| ---             | ---       | ---                      | ---                                                                                       |
+| :---            | :---      | :---                     | :---                                                                                      |
 | **server**      | **Yes**   |                          | Address for the destination server.                                                       |
 | port            | No        | **21**                   | Port for the destination server.                                                          |
 | **username**    | **Yes**   |                          | Username for the destination server.                                                      |
