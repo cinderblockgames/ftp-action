@@ -24,12 +24,12 @@ inputs:
   source:
     description:
       'Directory in source from which to upload.'
-    required: true
+    required: false
     default: '/'
   destination:
     description:
       'Directory in destination to which to upload.'
-    required: true
+    required: false
     default: '/'
   skipUnchanged:
     description:
