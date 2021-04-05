@@ -90,7 +90,7 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
                         }
                     }
                     Console.WriteLine($"...Updating {update.Count()} files...");
-                    Upload(client, update, options.TestOnly.Value);
+                    Upload(client, update, options.DestinationPath, options.TestOnly.Value);
                     Console.WriteLine();
 
                     #endregion
@@ -100,7 +100,7 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
                     // Upload any files that are new.
                     var upload = source.Except(destination, ItemComparer.Default);
                     Console.WriteLine($"...Uploading {upload.Count()} new files...");
-                    Upload(client, upload, options.TestOnly.Value);
+                    Upload(client, upload, options.DestinationPath, options.TestOnly.Value);
                     Console.WriteLine();
 
                     #endregion
@@ -110,7 +110,7 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
                     #region " Upsert "
 
                     Console.WriteLine($"...Uploading {source.Count()} files...");
-                    Upload(client, source, options.TestOnly.Value);
+                    Upload(client, source, options.DestinationPath, options.TestOnly.Value);
                     Console.WriteLine();
 
                     #endregion
@@ -143,18 +143,25 @@ namespace CinderBlockGames.GitHub.Actions.Ftp
 
         #region " Upload "
 
-        private static void Upload(FtpClient client, IEnumerable<Item> files, bool testOnly)
+        private static void Upload(FtpClient client, IEnumerable<Item> files, string destinationPath, bool testOnly)
         {
             var grouped = files.GroupBy(file => file.Directory, StringComparer.OrdinalIgnoreCase);
             foreach (var kvp in grouped)
             {
-                Console.WriteLine($"[Directory: {kvp.Key}]");
+                var directory = Join(destinationPath, kvp.Key);
+                Console.WriteLine($"[Directory: {directory}]");
                 Console.WriteLine(string.Join("\r\n", kvp.Select(file => file.FullPath)));
                 if (!testOnly)
                 {
-                    client.UploadFiles(kvp.Select(file => file.FullPath), kvp.Key);
+                    client.UploadFiles(kvp.Select(file => file.FullPath), directory);
                 }
             }
+        }
+
+        private static string Join(string left, string right)
+        {
+            var parts = left.Split('/').Concat(right.Split('/'));
+            return "/" + string.Join('/', parts.Where(part => part.Length > 0));
         }
 
         #endregion
