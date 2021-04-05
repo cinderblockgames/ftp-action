@@ -44,7 +44,7 @@ jobs:
       uses: actions/checkout@v2.3.4
       
     - name: FTP Deploy
-      uses: cinderblockgames/ftp-action@v1.2.0
+      uses: cinderblockgames/ftp-action@v1.2.2
       with:
         # required
         server: ftp.example.com
